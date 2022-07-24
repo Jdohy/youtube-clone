@@ -1,6 +1,8 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import session from "express-session";
+import { get } from "mongoose";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 
@@ -146,10 +148,26 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, username: sessionUsername, email: sessionEmail },
     },
     body: { name, email, username, location },
   } = req;
+  if (sessionUsername !== username) {
+    const exists = await User.exists({ username });
+    if (exists) {
+      return res.status(400).render("edit-profile", {
+        errorMessage: "this username is already taken",
+      });
+    }
+  }
+  if (sessionEmail !== email) {
+    const exists = await User.exists({ email });
+    if (exists) {
+      return res.status(400).render("edit-profile", {
+        errorMessage: "this email is already taken",
+      });
+    }
+  }
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
@@ -162,6 +180,13 @@ export const postEdit = async (req, res) => {
   );
   req.session.user = updateUser;
   return res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  return res.render("change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = (req, res) => {
+  return res.redirect("/");
 };
 
 export const see = (req, res) => res.send("See User");
