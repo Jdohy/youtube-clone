@@ -7,8 +7,12 @@
     "url": "git+https://github.com/Jdohy/youtube-clone.git"
   },
   "scripts": {
+    "start": "node build/init.js",
+    "build": "npm run build:server && npm run build:assets",
+    "build:server": "babel src -d build",
+    "build:assets": "webpack --mode=production",
     "dev:server": "nodemon",
-    "dev:assets": "webpack"
+    "dev:assets": "webpack --mode=development -w"
   },
   "author": "Dojo",
   "license": "MIT",
@@ -34,7 +38,8 @@
     "resolve-url": "^0.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.9",
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.10",
     "@babel/node": "^7.18.6",
     "@babel/preset-env": "^7.18.9",
     "babel-loader": "^8.2.5",
