@@ -82,7 +82,7 @@ const handleStart = () => {
     video.srcObject = null;
     video.src = videoFile;
     video.loop = true;
-    video.play();
+    video.play() ;
     actionBtn.innerText = "Download";
     actionBtn.disabled = false;
     actionBtn.addEventListener("click", handleDownload);
