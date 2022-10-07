@@ -13,14 +13,6 @@ import { localsMiddleware } from "./middlewares";
 const app = express();
 const logger = morgan("dev");
 
-module.exports = function (app) {
-  app.use(function (req, res, next) {
-    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-    next();
-  });
-};
-
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 
